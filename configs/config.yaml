@@ -1,0 +1,255 @@
+model: DDLM-Extractor
+is_training: True
+random_seed: 2025              # Default training seed; override with --seed.
+dataset: THU
+data_root: null                # Set this or RSVP_DATASET_ROOT to the directory containing dataset folders.
+n_fold: None
+subject_start_id: None
+subject_end_id: None
+epochs: 200
+weight_decay: 0.0001
+patience: 10
+use_gpu: True
+train_mode: single-subject      # single-subject / cross-subject
+data_mix: True
+apply_channel_selector: False
+
+log_runtime: true               # Whether to collect runtime-related metrics.
+rt_deadline_ms: 200.0           # End-to-end latency deadline used for miss-rate reporting.
+
+# Dataset-specific constants
+datasets:
+  THU:
+    sub_num: 64
+    n_channels: 62
+    fs: 128
+    n_class: 2
+    batch_size: 32
+  GIST:
+    sub_num: 55
+    n_channels: 32
+    fs: 128
+    n_class: 2
+    batch_size: 32
+  TCTR_1:
+    sub_num: 15
+    n_channels: 64
+    fs: 128
+    n_class: 2
+    batch_size: 32
+  TCTR_2:
+    sub_num: 15
+    n_channels: 64
+    fs: 128
+    n_class: 2
+    batch_size: 32
+  TCTR_A:
+    sub_num: 15
+    n_channels: 64
+    fs: 128
+    n_class: 2
+    batch_size: 32
+  TCTR_B:
+    sub_num: 15
+    n_channels: 64
+    fs: 128
+    n_class: 2
+    batch_size: 32
+
+# Model-specific overrides
+# Only keep models that are actively supported by models/eeg_models.py.
+models:
+  EEGNet:
+    learning_rate: 0.001
+    train_algorithm: ce
+
+  EEGNet_OS:
+    use_selector: True
+    learning_rate: 0.001
+    selector_lr: 0.01
+    train_algorithm: gumbel
+    selector_K: 32
+    selector_beta_start: 5.0
+    selector_beta_end: 0.1
+    selector_T: 25
+    selector_orth: 1
+    selector_per_sample: False
+
+  PLNet:
+    learning_rate: 0.001
+    train_algorithm: ce
+
+  PLNet_OS:
+    use_selector: True
+    learning_rate: 0.001
+    selector_lr: 0.01
+    train_algorithm: gumbel
+    selector_K: 32
+    selector_beta_start: 5.0
+    selector_beta_end: 0.1
+    selector_T: 25
+    selector_orth: 1
+    selector_per_sample: False
+
+  EEGNet_Gumbel:
+    backbone_model: EEGNet
+    use_selector: True
+    selector_variant: official_gumbel
+    learning_rate: 0.001
+    selector_lr: 0.01
+    train_algorithm: gumbel
+    selector_K: 32
+    selector_beta_start: 5.0
+    selector_beta_end: 0.1
+    selector_T: 25
+    selector_per_sample: True
+
+  EEGNet_OS_wo_Orth:
+    backbone_model: EEGNet
+    use_selector: True
+    selector_variant: wo_orth
+    learning_rate: 0.001
+    selector_lr: 0.01
+    train_algorithm: gumbel
+    selector_K: 32
+    selector_beta_start: 5.0
+    selector_beta_end: 0.1
+    selector_T: 25
+    selector_orth: 0
+    selector_per_sample: False
+
+  PLNet_Gumbel:
+    backbone_model: PLNet
+    use_selector: True
+    selector_variant: official_gumbel
+    learning_rate: 0.001
+    selector_lr: 0.01
+    train_algorithm: gumbel
+    selector_K: 32
+    selector_beta_start: 5.0
+    selector_beta_end: 0.1
+    selector_T: 25
+    selector_per_sample: True
+
+  PLNet_OS_wo_Orth:
+    backbone_model: PLNet
+    use_selector: True
+    selector_variant: wo_orth
+    learning_rate: 0.001
+    selector_lr: 0.01
+    train_algorithm: gumbel
+    selector_K: 32
+    selector_beta_start: 5.0
+    selector_beta_end: 0.1
+    selector_T: 25
+    selector_orth: 0
+    selector_per_sample: False
+
+  PPNN:
+    learning_rate: 0.0001
+    train_algorithm: ce
+
+  OS-Selector w/o Orthogonality:
+    learning_rate: 0.001
+    train_algorithm: gumbel
+    use_selector: True
+    selector_K: 32
+    selector_beta_start: 5.0
+    selector_beta_end: 0.1
+    selector_T: 25
+    selector_orth: 0
+    selector_lr: 0.01
+    selector_per_sample: False
+
+  DDLM-Extractor:                # Canonical paper-facing name for the DDLM backbone.
+    learning_rate: 0.001
+    train_algorithm: ce
+
+  OS-Selector (Ours):
+    learning_rate: 0.001
+    train_algorithm: gumbel
+    use_selector: True
+    selector_K: 32
+    selector_beta_start: 5.0
+    selector_beta_end: 0.1
+    selector_T: 25
+    selector_orth: 1
+    selector_lr: 0.01
+    selector_per_sample: False
+
+  lightweight_erp:
+    learning_rate: 0.001
+    train_algorithm: ce
+
+  LMDANet:
+    learning_rate: 0.001
+    train_algorithm: ce
+
+  LENet:
+    learning_rate: 0.001
+    train_algorithm: ce
+
+  1DCNN_BiLSTM:
+    learning_rate: 0.001
+    train_algorithm: ce
+
+  Correlation-based Selection:
+    learning_rate: 0.001
+    train_algorithm: ce
+    selector_K: 32
+    apply_channel_selector: True
+
+  Frequency-Domain Weighting:
+    learning_rate: 0.001
+    train_algorithm: ce
+    selector_K: 32
+    apply_channel_selector: True
+
+  SparseEA:
+    learning_rate: 0.001
+    train_algorithm: ce
+    selector_K: 32
+    apply_channel_selector: True
+
+  Gumbel-Softmax Selector:
+    learning_rate: 0.001
+    train_algorithm: dup
+    use_selector: True
+    selector_K: 8
+    selector_beta_start: 10.0
+    selector_beta_end: 0.1
+    selector_T: 150
+    selector_tau_start: 3.0
+    selector_tau_end: 1.1
+    selector_tau_T: 200
+    selector_lr: 0.01
+    selector_dup: 0.1
+    selector_per_sample: True      # Official baseline: per-sample Gumbel sampling during training.
+    selector_entropy_thresh: 0.05  # Official convergence threshold before early stopping is armed.
+    selector_entropy_patience: 1
+
+  Gumbel-Top-K Selector:
+    learning_rate: 0.001
+    train_algorithm: gumbel
+    use_selector: True
+    selector_variant: gumbel_topk
+    selector_K: 32
+    selector_beta_start: 5.0
+    selector_beta_end: 0.1
+    selector_T: 25
+    selector_lr: 0.01
+    selector_orth: 0
+    selector_per_sample: True
+
+  OS-Selector w/ Deterministic Top-K:
+    learning_rate: 0.001
+    train_algorithm: ce
+    use_selector: True
+    selector_variant: deterministic_topk
+    selector_K: 32
+    selector_beta_start: 5.0
+    selector_beta_end: 0.1
+    selector_T: 25
+    selector_lr: 0.01
+    selector_orth: 0
+    selector_per_sample: False
