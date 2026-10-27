@@ -15,7 +15,7 @@ from models.eeg_models import model_dict
 
 class ConcreteMultiSelector(nn.Module):
     """
-    DEL4RSVP-style concrete channel selector over the real EEG channels only.
+    OS-DDLM-style concrete channel selector over the real EEG channels only.
 
     The selector chooses K channels from C physical channels.
     There is no extra null / zero channel in this implementation.
@@ -67,7 +67,7 @@ class ConcreteMultiSelector(nn.Module):
         beta = self._beta()
 
         if self.training:
-            # DEL4RSVP uses deterministic temperature-annealed softmax rather
+            # OS-DDLM uses deterministic temperature-annealed softmax rather
             # than stochastic Gumbel-noise exploration.
             logits = self.alpha
             P_soft = self._row_softmax(logits, beta)
@@ -101,7 +101,7 @@ class ConcreteMultiSelector(nn.Module):
 
 
 class DeterministicTopKMultiSelector(ConcreteMultiSelector):
-    """DEL4RSVP selector with deterministic, without-replacement hard choices."""
+    """OS-DDLM selector with deterministic, without-replacement hard choices."""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

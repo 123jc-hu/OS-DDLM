@@ -1,9 +1,9 @@
-# DEL4RSVP
+# OS-DDLM
 
 论文 **"Orthogonal Hard Channel Selection with a Low-Arithmetic Decoder for Budget-Constrained
 RSVP-EEG Decoding"** 的代码。
 
-DEL4RSVP 由两个模块组成：
+OS-DDLM 由两个模块组成：
 
 - **OS-Selector**（Orthogonal Softmax Selector）：确定性的硬通道选择器。训练和推理都前向传播 argmax
   选出的电极，通过 softmax 代理梯度学习，并用正交惩罚约束软分配，减少重复选择。

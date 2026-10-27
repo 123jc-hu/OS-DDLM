@@ -6,7 +6,7 @@ The implementation follows three explicit phases per subject:
 3. freeze hard selections, slice the original EEG to K channels, transfer
    compatible C-channel weights, and fine-tune the K-channel DDLM.
 
-It is a transparent adaptation for DEL4RSVP, not an official reproduction of
+It is a transparent adaptation for OS-DDLM, not an official reproduction of
 the speech-enhancement ResGS implementation. In particular, the C-to-K DDLM
 weight transfer is necessary because DDLM is channel-structured, but is not
 described in the source paper's BASEN architecture.
