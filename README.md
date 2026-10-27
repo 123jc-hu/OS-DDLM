@@ -53,11 +53,12 @@ python scripts/smoke_test.py      # 不需要数据，输出 "Smoke test passed"
 
 ## 2. 数据准备
 
-THU 和 GIST 为公开数据集；TCTR 未公开发布，本文使用的预处理数据由原作者提供，需向其申请：
+三个数据集均已公开：
 
 - **THU**：S. Zhang et al., "A benchmark dataset for RSVP-based brain-computer interfaces," *Front. Neurosci.*, 2020.
 - **GIST**：K. Won et al., "EEG dataset for RSVP and P300 speller brain-computer interfaces," *Sci. Data*, 2022.
 - **TCTR**：W. Wei et al., "Preliminary study on rapid serial visualization presentation multi-class target EEG classification," *IEEE Trans. Biomed. Eng.*, 2025.
+  数据下载：https://www.scidb.cn/detail?dataSetId=01bfb950e8ef4c53918f5844c8368ab4
 
 按论文描述进行预处理：带通滤波、共平均参考、截取刺激后 0–1000 ms、基线校正、降采样到 128 Hz，
 并在每个 epoch 内对各通道标准化。每个被试保存为一个 `.npz` 文件，**保持原始 epoch 顺序**
