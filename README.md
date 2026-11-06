@@ -1,14 +1,14 @@
 # OS-DDLM
 
-论文 **"Orthogonal Hard Channel Selection with a Low-Arithmetic Decoder for Budget-Constrained
-RSVP-EEG Decoding"** 的代码。
+论文 **"OS-DDLM: Joint Electrode Selection and Low-Arithmetic Decoding for Sensor-Efficient
+RSVP-EEG Brain-Computer Interfaces"** 的代码。
 
 OS-DDLM 由两个模块组成：
 
 - **OS-Selector**（Orthogonal Softmax Selector）：确定性的硬通道选择器。训练和推理都前向传播 argmax
   选出的电极，通过 softmax 代理梯度学习，并用正交惩罚约束软分配，减少重复选择。
-- **DDLM-Extractor**（Depthwise-Dilated and Low-Rank Mixer Extractor）：低计算量解码器，由分组空洞时间卷积、
-  低秩空间混合和 ECA 通道注意力组成。
+- **DDLM-Extractor**（Depthwise-Dilated and Low-Rank Mixer Extractor）：低计算量解码器，由分组空洞时间卷积和
+  低秩空间混合（秩 8）组成。
 
 ## 目录结构
 
@@ -128,10 +128,10 @@ python scripts/run.py --model "OS-Selector w/ Deterministic Top-K" --dataset THU
 
 其他预算用 `--k` 指定（THU、TCTR：8、16、32、48；GIST：4、8、16、24）。
 
-**DDLM-Extractor 组件消融**
+**DDLM-Extractor 对照实验**（空间秩与时间结构，被试内）
 
 ```bash
-for variant in late_downsampling no_dilation full_spatial no_eca; do
+for variant in late_downsampling no_dilation full_spatial rank2 rank4; do
   python scripts/run.py --model DDLM-Extractor --ddlm-ablation $variant --dataset THU
 done
 ```

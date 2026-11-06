@@ -22,7 +22,7 @@ SELECTOR_SCHEDULES = {
     "GIST": dict(selector_lr=0.005, selector_T=25, selector_beta_end=0.1),
     "TCTR": dict(selector_lr=0.005, selector_T=50, selector_beta_end=0.01),
 }
-DDLM_ABLATIONS = ["late_downsampling", "no_dilation", "full_spatial", "no_eca"]
+DDLM_ABLATIONS = ["late_downsampling", "no_dilation", "full_spatial", "rank2", "rank4"]
 
 
 def parse_args():

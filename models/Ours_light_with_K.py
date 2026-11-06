@@ -31,17 +31,6 @@ class SpatialFusionLowRank(nn.Module):
         return self.act(self.bn(x))
     
 
-class ECA(nn.Module):
-    def __init__(self, ch, k=3):
-        super().__init__()
-        self.pool = nn.AdaptiveAvgPool2d(1)
-        self.conv = nn.Conv1d(1, 1, kernel_size=k, padding=k//2, bias=False)
-    def forward(self, x):  # [B, C, H, W]
-        y = self.pool(x)                  # [B,C,1,1]
-        y = self.conv(y.squeeze(-1).transpose(1,2)).transpose(1,2).unsqueeze(-1)
-        return x * torch.sigmoid(y)
-
-
 class Model(nn.Module):
     def __init__(self, config: dict):
         super().__init__()
@@ -63,8 +52,7 @@ class Model(nn.Module):
 
         self.spatiotemporal_fusion_block = nn.Sequential(
             Rearrange("b (c h) k t -> b h c (k t)", h=group_dim),
-            SpatialFusionLowRank(self.n_channels, group_dim=group_dim, r=4),
-            ECA(16, k=3),
+            SpatialFusionLowRank(self.n_channels, group_dim=group_dim, r=8),
             nn.AvgPool2d((1, 4)),
             nn.Dropout(0.25),
         )
